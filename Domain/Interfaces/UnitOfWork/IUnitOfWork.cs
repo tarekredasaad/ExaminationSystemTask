@@ -1,0 +1,24 @@
+﻿using Domain.Interfaces.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Models;
+namespace Domain.Interfaces.UnitOfWork
+{
+    public interface IUnitOfWork :IDisposable
+    {
+        public IRepository<User> UserRepository { get; }
+        public IRepository<Instructor> InstructorRepo { get; }
+        public IRepository<Student> StudentRepo  { get;}
+        public IRepository<CourseStudent> CourseStudentRepo { get; }
+        public IRepository<Course> CourseRepo { get;  }
+
+        public IRepository<Tasks> TasksRepo { get; }
+        public IRepository<TeamMember> TeamMemberRepo { get; }
+
+
+        void commit();
+    }
+}
