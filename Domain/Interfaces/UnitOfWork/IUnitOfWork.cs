@@ -14,6 +14,9 @@ namespace Domain.Interfaces.UnitOfWork
         public IRepository<Student> StudentRepo  { get;}
         public IRepository<CourseStudent> CourseStudentRepo { get; }
         public IRepository<Course> CourseRepo { get;  }
+        public IRepository<Exam> ExamRepo { get;  }
+        public IRepository<Question> QuestionRepo { get;  }
+        public IRepository<Choice> ChoiceRepo { get;  }
 
         public IRepository<Tasks> TasksRepo { get; }
         public IRepository<TeamMember> TeamMemberRepo { get; }

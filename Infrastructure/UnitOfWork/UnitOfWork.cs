@@ -41,6 +41,9 @@ namespace Infrastructure.UnitOfWork
         public IRepository<Student> StudentRepo { get; private set; }
         public IRepository<CourseStudent> CourseStudentRepo { get; private set; }
         public IRepository<Course> CourseRepo { get; private set; }
+        public IRepository<Exam> ExamRepo { get; private set; }
+        public IRepository<Question> QuestionRepo { get; private set; }
+        public IRepository<Choice> ChoiceRepo { get; private set; }
         public IRepository<Tasks> TasksRepo { get; private set; }
 
         public IRepository<TeamMember> TeamMemberRepo { get; private set; }
@@ -53,6 +56,9 @@ namespace Infrastructure.UnitOfWork
             StudentRepo = new Repository<Student>(Context);
             CourseStudentRepo = new Repository<CourseStudent>(Context);
             CourseRepo = new Repository<Course>(Context);
+            ExamRepo = new Repository<Exam>(Context);
+            QuestionRepo = new Repository<Question>(Context);
+            ChoiceRepo = new Repository<Choice>(Context);
              //assessment_true_falseRepo = new Repository<assessment_true_false>(Context);
              //assessment_sectionsRepo = new Repository<assessment_sections>(Context);
              //assessment_textRepo = new Repository<assessment_text>(Context);

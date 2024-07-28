@@ -11,5 +11,6 @@ namespace Domain.Interfaces.Services
     {
         public Task<ResultDTO> AddCourse(CourseDTO courseDTO);
         Task<ResultDTO> UpdateCourse(UpdateCourseDTO courseDTO);
+        Task<ResultDTO> enrollCourse(CourseDTO courseDTO);
     }
 }

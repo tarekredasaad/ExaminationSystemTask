@@ -9,6 +9,6 @@ namespace Domain.Models
     public class Student :User
     {
         
-        public Course? Course { get; set; }
+        public List<Course>? Course { get; set; }
     }
 }

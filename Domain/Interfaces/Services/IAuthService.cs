@@ -12,5 +12,8 @@ namespace Domain.Interfaces.Services
         public Task<ResultDTO> RegisterAsyncInstructor(InstructorDTO dto);
         public Task<ResultDTO> LoginAsyncInstructor(InstructorDTO dto);
         //Task<ResultDTO> Logout();
+
+        public Task<ResultDTO> RegisterAsyncStudent(StudentDTO dto);
+        public Task<ResultDTO> LoginAsyncStudent(StudentDTO dto);
     }
 }

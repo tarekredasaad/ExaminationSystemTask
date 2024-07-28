@@ -9,13 +9,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.MapperProfile
 {
-    public class UserProfiler :Profile
+    public class QuestionProfile :Profile
     {
-
-        public UserProfiler()
+        public QuestionProfile() 
         {
-            CreateMap<Instructor, InstructorDTO>().ReverseMap();
-            CreateMap<Student, StudentDTO>().ReverseMap(); 
+            CreateMap<Question, QuestionExamDTO>().ReverseMap();
         }
+
     }
 }

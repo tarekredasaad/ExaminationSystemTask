@@ -33,6 +33,8 @@ namespace Infrastructure
         public DbSet<ExamQuestion> ExamQuestions { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseStudent> CourseStudents { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+       
         public DbSet<Group> Groups { get; set; }
         //public DbSet<Tasks> Tasks { get; set; }
         //public DbSet<TeamMember> TeamMembers { get; set; }

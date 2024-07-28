@@ -58,5 +58,36 @@ namespace Infrastructure.Services
             _httpContextAccessor.HttpContext.Session.SetString("Username", instructor.username);
             return (new ResultDTO() { StatusCode = 200, Data = instructor, Message = "you login successfully" });
         }
+
+       public async Task<ResultDTO> RegisterAsyncStudent(StudentDTO dto)
+        {
+            Student student = new Student();
+            dto.password = HashPassword.Encrypt(dto.password);
+            student = _mapper.Map<Student>(dto);
+            _unitOfWork.StudentRepo.Create(student);
+            _unitOfWork.commit();
+            ResultDTO Result = new ResultDTO()
+            {
+                StatusCode = 200,
+                Data = student,
+                Message = "You added the Instructor successfully"
+            };
+            return Result;
+
+        }
+
+        public async Task<ResultDTO> LoginAsyncStudent(StudentDTO dto)
+        {
+            Student student = _unitOfWork.StudentRepo.Get(i => i.username == dto.username);
+            var password = HashPassword.Decrypt(student.password);
+            if (student == null || password != dto.password)
+            {
+                return (new ResultDTO() { StatusCode = 400, Data = "invalid username or password", Message = "invalid username or password" });
+            }
+
+            //// For simplicity, we are not using tokens here. Instead, set a session or a cookie.
+            _httpContextAccessor.HttpContext.Session.SetString("Username", student.username);
+            return (new ResultDTO() { StatusCode = 200, Data = student, Message = "you login successfully" });
+        }
     }
 }

@@ -27,5 +27,12 @@ namespace DynamicAuthApi.Controllers
             if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
             return Ok(courseService.UpdateCourse(courseDTO));
         }
+
+        [HttpPost("EnrollCourse")]
+        public ActionResult<ResultDTO> EnrollCourse(CourseDTO courseDTO)
+        {
+            if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
+            return Ok(courseService.enrollCourse(courseDTO));
+        }
     }
 }
