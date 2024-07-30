@@ -16,11 +16,18 @@ namespace DynamicAuthApi.Controllers
             this._examService = examService;
         }
 
-        [HttpPost]
-        public ActionResult<ResultDTO> EnrollCourse(AddExamDTO examDTO)
+        [HttpPost("AddExam")]
+        public ActionResult<ResultDTO> AddExam(AddExamDTO examDTO)
         {
             if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
             return Ok(_examService.AddExam(examDTO));
+        }
+
+        [HttpPost("TakeExam")]
+        public ActionResult<ResultDTO> TakeExam(TakeExamDTO examDTO)
+        {
+            if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
+            return Ok(_examService.TakeExam(examDTO));
         }
     }
 }

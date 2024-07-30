@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Services
 {
-    public interface IExamService
+    public interface IAnswerService
     {
-        Task<ResultDTO> AddExam(AddExamDTO examDTO);
-        public  Task<ResultDTO> TakeExam(TakeExamDTO courseDTO);
+          Task<ResultDTO> SubmitExam(AnswersDTO answerDTO);
     }
 }

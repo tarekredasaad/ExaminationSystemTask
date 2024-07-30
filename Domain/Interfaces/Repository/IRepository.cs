@@ -16,6 +16,7 @@ namespace Domain.Interfaces.Repository
         public T Get(string model,string model2,string model3);
         public IEnumerable<T> GetAll();
         public IEnumerable<T> GetAll(string obj);
+        public void AddRange(List<T> list);
 
         public T GetByID(int id, string property1, string property2, string property3);
 

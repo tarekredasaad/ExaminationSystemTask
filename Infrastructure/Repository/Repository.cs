@@ -22,7 +22,10 @@ namespace Infrastructure.Repository
         {
             return _context.Set<T>().AsNoTracking().FirstOrDefault(e=>e.id == id);
         }
-
+        public void AddRange(List<T> list)
+        {
+             _context.Set<T>().AddRange(list);
+        }
         public T Get(Expression<Func<T, bool>> expression)
         {
             return (T)_context.Set<T>().Where(expression).FirstOrDefault();
@@ -74,6 +77,16 @@ namespace Infrastructure.Repository
         }
 
         T IRepository<T>.Get(string model, string model2, string model3)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<T> IRepository<T>.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<T> IRepository<T>.GetAll(string obj)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
 ﻿using Domain.DTO;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Domain.Interfaces.Services
         public Task<ResultDTO> AddCourse(CourseDTO courseDTO);
         Task<ResultDTO> UpdateCourse(UpdateCourseDTO courseDTO);
         Task<ResultDTO> enrollCourse(CourseDTO courseDTO);
+          Task<CourseStudent> GetStudentCourse(CourseDTO courseDTO);
     }
 }

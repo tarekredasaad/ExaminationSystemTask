@@ -8,9 +8,9 @@ namespace Domain.DTO
 {
     public class AnswersDTO
     {
-        
         public int ExamId { get; set; }
         public List<AnswerQuestion> answerQuestions { get; set; }
+        
     }
 
     public class AnswerQuestion

@@ -58,6 +58,7 @@ namespace DynamicAuthApi
             builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<IExamService, ExamService>();
+            builder.Services.AddScoped<IAnswerService, AnswerService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             //builder.Services.AddScoped<IMemberService, MemberService>();
             //builder.Services.AddTransient<IRequestHandler<AnswerByIdQuery, assessment_answers>, AnswerQueryHandler>();
@@ -66,6 +67,7 @@ namespace DynamicAuthApi
             //builder.Services.AddScoped<IAuthorizationHandler, GroupPermissionAuthorizationHandler>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())); // instead name of each one 
             builder.Services.AddAutoMapper(typeof(QuestionProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(AnswerProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(ChoiceProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(CourseProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(MemberProfile).Assembly);

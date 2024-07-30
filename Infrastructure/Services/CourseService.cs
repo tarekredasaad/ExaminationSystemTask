@@ -51,7 +51,25 @@ namespace Infrastructure.Services
             }
         }
 
-        //public async Task<ResultDTO> GetTaskById(int id)
+        public async Task<CourseStudent> GetStudentCourse(CourseDTO courseDTO)
+        {
+            if(courseDTO != null)
+            {
+                Course course = _unitOfWork.CourseRepo.Get(c => c.title == courseDTO.title);
+                string userName = _httpContextAccessor.HttpContext.Session.GetString("Username");
+                Student student = _unitOfWork.StudentRepo.Get(x => x.username == userName);
+                CourseStudent courseStudent = _unitOfWork.CourseStudentRepo.Get(cs=>cs.CourseId == course.id && cs.StudentId == student.id);
+                if(courseStudent == null)
+                {
+                    return null;
+                }
+                return courseStudent;
+            }
+            else
+            {
+                return null;
+            }
+        }
         //{
         //    if (id != null)
         //    {
