@@ -10,5 +10,6 @@ namespace Domain.Models
     {
         
         public List<Course>? Course { get; set; }
+        public List<Exam>? Exams { get; set; }
     }
 }

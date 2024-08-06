@@ -38,7 +38,7 @@ namespace Infrastructure.Services
                 course.title = courseDTO.title;
                 course.InstructorId = member.id;
                 var NewCourse = _unitOfWork.CourseRepo.Create(course);
-                _unitOfWork.commit();
+                //_unitOfWork.commit();
 
                 return new ResultDTO() { StatusCode = 200, Data = NewCourse, Message = "You added the Task successfully" };
 
@@ -70,18 +70,14 @@ namespace Infrastructure.Services
                 return null;
             }
         }
-        //{
-        //    if (id != null)
-        //    {
-        //        Tasks myTask = _unitOfWork.TasksRepo.GetById(id);
-        //        return new ResultDTO() { StatusCode = 200, Data = myTask, Message = "Your operation Has done successfully" };
+        public async Task<ResultDTO> GetCourses()
+        {
+            string userName = _httpContextAccessor.HttpContext.Session.GetString("Username");
+            Instructor member = _unitOfWork.InstructorRepo.Get(x => x.username == userName);
+            List<Course> courses = _unitOfWork.CourseRepo.GetAll(c => c.InstructorId == member.id).ToList();
 
-        //    }
-        //    else
-        //    {
-        //        return new ResultDTO() { StatusCode = 400, Data = "Invalid operation" };
-        //    }
-        //}
+            return  ResultDTO.Sucess(courses);
+        }
 
         public async Task<ResultDTO> enrollCourse(CourseDTO courseDTO)
         {
@@ -120,20 +116,26 @@ namespace Infrastructure.Services
 
         }
 
-        //public async Task<ResultDTO> DeleteTask(int id)
-        //{
-        //    if (id != null)
-        //    {
-        //        _unitOfWork.TasksRepo.Delete(id);
-        //        _unitOfWork.commit();
-        //        return new ResultDTO() { StatusCode = 200, Data = "Your Task Has deleted successfully", Message = "Your operation Has done successfully" };
+        public async Task<ResultDTO> DeleteCourse(int id)
+        {
+            if (id != 0 && id != null)
+            {
 
-        //    }
-        //    else
-        //    {
-        //        return new ResultDTO() { StatusCode = 400, Data = "Invalid operation" };
-        //    }
-        //}
+                Course course = _unitOfWork.CourseRepo.Get(c => c.id == id);
+                _unitOfWork.CourseRepo.Delete(id);
+
+                return ResultDTO.Sucess(course);
+            }
+            return ResultDTO.Faliure();
+
+        }
+
+
+
+
+
+
     }
+
 }
 

@@ -8,6 +8,10 @@ namespace Domain.Constants.Enums
 {
     public enum Models
     {
-        Course
+        Course,
+        Exam,
+        Question,
+        Choice
+
     }
 }

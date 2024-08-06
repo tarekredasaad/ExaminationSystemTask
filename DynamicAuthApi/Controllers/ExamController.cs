@@ -11,9 +11,11 @@ namespace DynamicAuthApi.Controllers
     public class ExamController : ControllerBase
     {
         IExamService _examService;
-        public ExamController(IExamService examService)
+        IEvaluateExamService EvaluateExamService { get; set; }
+        public ExamController(IExamService examService, IEvaluateExamService evaluateExamService)
         {
             this._examService = examService;
+            EvaluateExamService = evaluateExamService;
         }
 
         [HttpPost("AddExam")]
@@ -23,11 +25,32 @@ namespace DynamicAuthApi.Controllers
             return Ok(_examService.AddExam(examDTO));
         }
 
+        [HttpPost("AddExamBySystem")]
+        public ActionResult<ResultDTO> AddExamBySystem()
+        {
+            if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
+            return Ok(_examService.AddExamBySystem());
+        }
+
         [HttpPost("TakeExam")]
         public ActionResult<ResultDTO> TakeExam(TakeExamDTO examDTO)
         {
             if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
             return Ok(_examService.TakeExam(examDTO));
+        }
+
+        [HttpPost("EvaluateExam")]
+        public  ActionResult<ResultDTO> EvaluateExam(EvaluateExamDTO evaluateExamDTO)
+        {
+            if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
+            return Ok(EvaluateExamService.EvaluateExam(evaluateExamDTO));
+        }
+
+        [HttpPost("ViewResult")]
+        public ActionResult<ResultDTO> ViewResult(ExamResultDTO examResultDTO)
+        {
+            if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
+            return Ok(_examService.ViewResult(examResultDTO));
         }
     }
 }

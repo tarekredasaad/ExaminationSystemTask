@@ -11,5 +11,8 @@ namespace Domain.Interfaces.Services
     {
         Task<ResultDTO> AddExam(AddExamDTO examDTO);
         public  Task<ResultDTO> TakeExam(TakeExamDTO courseDTO);
+        public  Task<ResultDTO> GetExams();
+        public Task<ResultDTO> ViewResult(ExamResultDTO examResultDTO);
+        public  Task<ResultDTO> AddExamBySystem();
     }
 }

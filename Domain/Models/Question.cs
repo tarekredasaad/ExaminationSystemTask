@@ -12,8 +12,8 @@ namespace Domain.Models
         public int grade { get; set; }
         public int ExamId { get; set; }
         public Level Level { get; set; }
-        public List< Exam> Exam { get; set; }
-        // you should add list choices when you create question
+        Exam Exam { get; set; }
+        
         public List<Choice> Choices { get; set; }
     }
 

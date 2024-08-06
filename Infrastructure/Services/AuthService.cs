@@ -5,7 +5,7 @@ using Domain.Interfaces.Services;
 using Domain.Interfaces.UnitOfWork;
 using Domain.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,15 +32,15 @@ namespace Infrastructure.Services
             Instructor instructor = new Instructor();
             dto.password = HashPassword.Encrypt( dto.password);
             instructor = _mapper.Map<Instructor>(dto);
-            _unitOfWork.InstructorRepo.Create(instructor);
-            _unitOfWork.commit();
+            instructor = await _unitOfWork.InstructorRepo.Create(instructor);
+            //_unitOfWork.commit();
             ResultDTO Result = new ResultDTO()
             {
                 StatusCode = 200,
                 Data = instructor,
                 Message = "You added the Instructor successfully"
             };
-            return Result;
+            return ResultDTO.Sucess(instructor);
 
             //await _userRepository.AddAsync(user);
         }
@@ -64,7 +64,7 @@ namespace Infrastructure.Services
             Student student = new Student();
             dto.password = HashPassword.Encrypt(dto.password);
             student = _mapper.Map<Student>(dto);
-            _unitOfWork.StudentRepo.Create(student);
+          student = await  _unitOfWork.StudentRepo.Create(student);
             _unitOfWork.commit();
             ResultDTO Result = new ResultDTO()
             {

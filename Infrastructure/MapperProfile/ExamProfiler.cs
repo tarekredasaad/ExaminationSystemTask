@@ -9,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.MapperProfile
 {
-    public class ChoiceProfile:Profile
+    public class ExamProfiler:Profile
     {
-        public ChoiceProfile() 
+        public ExamProfiler() 
         {
-            CreateMap<Choice, ChoiceDTO>().ReverseMap();
-            CreateMap<Choice, UpdateChoiceDTO>().ReverseMap();
+             CreateMap<Exam, ExamDTO>().ReverseMap();
         }
     }
 }

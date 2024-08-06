@@ -10,9 +10,12 @@ namespace Domain.Interfaces.Services
 {
     public interface ICourseService
     {
+        
         public Task<ResultDTO> AddCourse(CourseDTO courseDTO);
         Task<ResultDTO> UpdateCourse(UpdateCourseDTO courseDTO);
         Task<ResultDTO> enrollCourse(CourseDTO courseDTO);
+        public Task<ResultDTO> GetCourses();
           Task<CourseStudent> GetStudentCourse(CourseDTO courseDTO);
+        Task<ResultDTO> DeleteCourse(int id);
     }
 }

@@ -22,71 +22,65 @@ namespace Infrastructure.Repository
         {
             return _context.Set<T>().AsNoTracking().FirstOrDefault(e=>e.id == id);
         }
-        public void AddRange(List<T> list)
+        public async Task<List<T>> AddRange(List<T> list)
         {
-             _context.Set<T>().AddRange(list);
+            await _context.Set<T>().AddRangeAsync(list);
+            return list;
         }
         public T Get(Expression<Func<T, bool>> expression)
         {
             return (T)_context.Set<T>().Where(expression).FirstOrDefault();
         }
-        public IEnumerable<T> Get(Expression<Func<T, bool>> expression,string model, string model2, string model3)
+       
+
+        public async Task<T> GetByID(int id, string property1)
         {
-            return _context.Set<T>().Include(model).Include(model2).Include(model3).Where(expression);
-        }
-        public IEnumerable<T> Get(string model, string model2, string model3)
-        {
-            return _context.Set<T>().Include(model).Include(model2).Include(model3);
+            return await _context.Set<T>().Include(property1)
+                .FirstOrDefaultAsync(x=>x.id == id);
         }
 
-        public T GetByID(int id, string property1, string property2, string property3)
+        public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().Include(property1).Include(property2).Include(property3)
-                .FirstOrDefault(x=>x.id == id);
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            return _context.Set<T>().AsNoTracking().ToList();
+            return _context.Set<T>().AsNoTracking();
         }
         public  IEnumerable<T> GetAll(string obj)
         {
             return _context.Set<T>().AsNoTracking().Include(obj).ToList();
         }
-        public T Update(T entity)
+        public  async Task Update(T entity)
         {
-            _context.Set<T>().Update(entity);
-            
-            return entity;
+         var obj =  _context.Set<T>().Update(entity);
+
+            //return obj;
         }
-        public T Create(T entity)
+        public async Task<T> Create(T entity)
         {
-            _context.Set<T>().AddAsync(entity);  
+            await _context.Set<T>().AddAsync(entity);  
            return entity;
         }
 
         public  void Delete(int id)
         {
            var entity =  _context.Set<T>().Find(id);
-            _context.Set<T>().Remove(entity);
+            entity.deleted = true;
+            _context.Set<T>().Update(entity);
         }
 
-        T IRepository<T>.Get(Expression<Func<T, bool>> expression, string model, string model2, string model3)
+        public async Task<T> Get(Expression<Func<T, bool>> expression, string model)
         {
-            throw new NotImplementedException();
+           return  _context.Set<T>().AsNoTracking().Include(model).FirstOrDefault();
         }
 
-        T IRepository<T>.Get(string model, string model2, string model3)
+
+
+
+
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().AsNoTracking().Where(expression);
         }
 
-        IQueryable<T> IRepository<T>.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        IQueryable<T> IRepository<T>.GetAll(string obj)
+        T IRepository<T>.Get(Expression<Func<T, bool>> expression, string model)
         {
             throw new NotImplementedException();
         }

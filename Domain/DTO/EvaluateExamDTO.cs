@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.DTO
 {
-    public class TakeExamDTO
+    public class EvaluateExamDTO
     {
-        public string ExamTitle { get; set; }
-        public int CourseId { get; set; }
+        public int ExamId { get; set; }
     }
 }

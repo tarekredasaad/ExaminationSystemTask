@@ -30,7 +30,7 @@ namespace Infrastructure.Services
 
                 member = _mapper.Map<TeamMember>(memberDTO);
                 //task.teamMember = member;
-                TeamMember NewTask = _unitOfWork.TeamMemberRepo.Create(member);
+                TeamMember NewTask = await _unitOfWork.TeamMemberRepo.Create(member);
                 _unitOfWork.commit();
                 ResultDTO Result = new ResultDTO()
                 {

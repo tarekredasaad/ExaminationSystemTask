@@ -15,7 +15,7 @@ namespace Domain.DTO
 
     public class AnswerQuestion
     {
-        public int QuesttionId { get; set; }
-        public string text { get; set; }
+        public int QuestionId { get; set; }
+        public int ChoiceId { get; set; }
     }
 }

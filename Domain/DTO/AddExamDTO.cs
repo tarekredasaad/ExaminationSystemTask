@@ -9,12 +9,7 @@ namespace Domain.DTO
 {
     public class AddExamDTO
     {
-        public string title { get; set; }
-        public int Score { get; set; }
-        
-        public int CourseId { get; set; }
-        public TypeExam type { get; set; }
-        public int NumberQuestions { get; set; }
+       public ExamDTO ExamDTO { get; set; }
 
         public List<QuestionExamDTO> questions { get; set; }
 

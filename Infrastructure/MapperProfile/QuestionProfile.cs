@@ -14,6 +14,8 @@ namespace Infrastructure.MapperProfile
         public QuestionProfile() 
         {
             CreateMap<Question, QuestionExamDTO>().ReverseMap();
+            CreateMap<Question, QuestionDTO>().ReverseMap();
+            CreateMap<Question, UpdateQuestionDTO>().ReverseMap();
         }
 
     }

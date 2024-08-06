@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain.DTO
 {
-    public class ChoiceDTO
+    public class UpdateQuestionDTO
     {
+        public int id { get; set; }
         public string text { get; set; }
-        public int questionId { get; set; }
-        
-        public bool IsRight { get; set; }
+        public int grade { get; set; }
+        public int ExamId { get; set; }
+        public Level Level { get; set; }
     }
 }

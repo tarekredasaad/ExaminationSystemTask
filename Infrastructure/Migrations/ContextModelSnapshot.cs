@@ -22,6 +22,21 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<int>("Courseid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("studentsid")
+                        .HasColumnType("int");
+
+                    b.HasKey("Courseid", "studentsid");
+
+                    b.HasIndex("studentsid");
+
+                    b.ToTable("CourseStudent");
+                });
+
             modelBuilder.Entity("Domain.Models.Answer", b =>
                 {
                     b.Property<int>("id")
@@ -29,6 +44,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("ChoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
@@ -39,11 +60,9 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("deleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("id");
+
+                    b.HasIndex("ExamId");
 
                     b.HasIndex("QuestionId");
 
@@ -142,6 +161,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<int>("InstructorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumberQuestions")
                         .HasColumnType("int");
 
@@ -150,9 +172,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<bool>("deleted")
                         .HasColumnType("bit");
-
-                    b.Property<int>("instructorid")
-                        .HasColumnType("int");
 
                     b.Property<string>("title")
                         .IsRequired()
@@ -165,7 +184,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("instructorid");
+                    b.HasIndex("InstructorId");
 
                     b.ToTable("Exams");
                 });
@@ -321,9 +340,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int?>("Courseid")
-                        .HasColumnType("int");
-
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
@@ -340,11 +356,44 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Courseid");
-
                     b.HasIndex("GroupId");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("Domain.Models.StudentExam", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("Assesment")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsTaken")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("deleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("studentExams");
                 });
 
             modelBuilder.Entity("ExamQuestion", b =>
@@ -362,6 +411,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("ExamQuestion");
                 });
 
+            modelBuilder.Entity("ExamStudent", b =>
+                {
+                    b.Property<int>("Examsid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Studentsid")
+                        .HasColumnType("int");
+
+                    b.HasKey("Examsid", "Studentsid");
+
+                    b.HasIndex("Studentsid");
+
+                    b.ToTable("ExamStudent");
+                });
+
             modelBuilder.Entity("GroupPermission", b =>
                 {
                     b.Property<int>("Groupsid")
@@ -377,19 +441,42 @@ namespace Infrastructure.Migrations
                     b.ToTable("GroupPermission");
                 });
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.HasOne("Domain.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("Courseid")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("studentsid")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Models.Answer", b =>
                 {
+                    b.HasOne("Domain.Models.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Domain.Models.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Student", "student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Exam");
 
                     b.Navigation("Question");
 
@@ -401,7 +488,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Question", "question")
                         .WithMany("Choices")
                         .HasForeignKey("questionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("question");
@@ -410,9 +497,9 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Models.Course", b =>
                 {
                     b.HasOne("Domain.Models.Instructor", "instructor")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("InstructorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("instructor");
@@ -423,13 +510,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Course");
@@ -442,13 +529,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Course", "course")
                         .WithMany("Exams")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Instructor", "instructor")
                         .WithMany("Exams")
-                        .HasForeignKey("instructorid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("course");
@@ -461,13 +548,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Exam", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Exam");
@@ -480,13 +567,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Group", "Group")
                         .WithMany()
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Permission", "Permission")
                         .WithMany()
                         .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Group");
@@ -505,17 +592,30 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Student", b =>
                 {
-                    b.HasOne("Domain.Models.Course", "Course")
-                        .WithMany("students")
-                        .HasForeignKey("Courseid");
-
                     b.HasOne("Domain.Models.Group", "Group")
                         .WithMany()
                         .HasForeignKey("GroupId");
 
-                    b.Navigation("Course");
-
                     b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("Domain.Models.StudentExam", b =>
+                {
+                    b.HasOne("Domain.Models.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("ExamQuestion", b =>
@@ -523,13 +623,28 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Exam", null)
                         .WithMany()
                         .HasForeignKey("Examid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Question", null)
                         .WithMany()
                         .HasForeignKey("Questionsid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ExamStudent", b =>
+                {
+                    b.HasOne("Domain.Models.Exam", null)
+                        .WithMany()
+                        .HasForeignKey("Examsid")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("Studentsid")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -538,25 +653,25 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Group", null)
                         .WithMany()
                         .HasForeignKey("Groupsid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Permission", null)
                         .WithMany()
                         .HasForeignKey("Permissionsid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Models.Course", b =>
                 {
                     b.Navigation("Exams");
-
-                    b.Navigation("students");
                 });
 
             modelBuilder.Entity("Domain.Models.Instructor", b =>
                 {
+                    b.Navigation("Courses");
+
                     b.Navigation("Exams");
                 });
 

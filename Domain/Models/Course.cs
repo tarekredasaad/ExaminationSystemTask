@@ -15,7 +15,7 @@ namespace Domain.Models
         [JsonIgnore]
         public List<Student>? students { get; set; }
         [JsonIgnore]
-        public List<Exam> Exams { get; set;}
+        public List<Exam>? Exams { get; set;}
 
 
     }

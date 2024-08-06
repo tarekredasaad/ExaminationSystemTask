@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.UnitOfWork
 {
@@ -43,22 +44,25 @@ namespace Infrastructure.UnitOfWork
         public IRepository<Course> CourseRepo { get; private set; }
         public IRepository<Answer> AnswerRepo { get; private set; }
         public IRepository<Exam> ExamRepo { get; private set; }
+        public IRepository<ExamQuestion> ExamQuestionRepo { get; private set; }
         public IRepository<StudentExam> StudentExamRepo { get; private set; }
         public IRepository<Question> QuestionRepo { get; private set; }
         public IRepository<Choice> ChoiceRepo { get; private set; }
         public IRepository<Tasks> TasksRepo { get; private set; }
 
         public IRepository<TeamMember> TeamMemberRepo { get; private set; }
-
+        //IDbContextTransaction transaction;
         public UnitOfWork(Context context) 
         {
             Context = context;
+            //transaction = Context.Database.BeginTransaction();
             UserRepository = new Repository<User>(Context);
             InstructorRepo = new Repository<Instructor>(Context);
             StudentRepo = new Repository<Student>(Context);
             CourseStudentRepo = new Repository<CourseStudent>(Context);
             CourseRepo = new Repository<Course>(Context);
             ExamRepo = new Repository<Exam>(Context);
+            ExamQuestionRepo = new Repository<ExamQuestion>(Context);
             StudentExamRepo = new Repository<StudentExam>(Context);
             QuestionRepo = new Repository<Question>(Context);
             AnswerRepo = new Repository<Answer>(Context);
@@ -79,17 +83,18 @@ namespace Infrastructure.UnitOfWork
              TasksRepo = new Repository<Tasks>(Context);
             TeamMemberRepo = new Repository<TeamMember>(Context);
         }
-        public void commit() 
+        public async Task commit() 
         {
             try
             {
-                Context.SaveChanges();
+                await Context.SaveChangesAsync();
                 //Context.Database.CurrentTransaction.Commit();
             }
             catch(Exception ex) 
             {
                 Context.Database.CurrentTransaction.Rollback();
-                Console.WriteLine(ex.InnerException.ToString() + ex.StackTrace.ToString() );
+                //Console.WriteLine(ex.InnerException.ToString() + ex.StackTrace.ToString() );
+                throw;
             }
         }
 

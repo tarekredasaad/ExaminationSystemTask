@@ -32,25 +32,33 @@ namespace Infrastructure.Services
                 string userName = _httpContextAccessor.HttpContext.Session.GetString("Username");
                 Student student = _unitOfWork.StudentRepo.Get(x => x.username == userName);
                 StudentExam studentExam = _unitOfWork.StudentExamRepo.Get(se=>se.ExamId == answerDTO.ExamId && se.StudentId == student.id);
-                if(studentExam != null)
-                {
                     List<Answer> answers = new List<Answer>();
+                if(studentExam != null && studentExam.IsTaken)
+                {
                     foreach(var _answer in answerDTO.answerQuestions)
                     {
                         Answer answer = new Answer();
                         answer = _mapper.Map<Answer>(_answer);
                         answer.ExamId = answerDTO.ExamId;
                         answer.StudentId = student.id;
-                        answer = _unitOfWork.AnswerRepo.Create(answer);
-                        _unitOfWork.commit();
+                        //answer = await _unitOfWork.AnswerRepo.Create(answer);
+                        //_unitOfWork.commit();
+                        answers.Add(answer);
                     }
+                  answers=  await _unitOfWork.AnswerRepo.AddRange(answers);
+                    studentExam.Completed = true;
+                    await _unitOfWork.StudentExamRepo.Update(studentExam);
                 }
-                return new ResultDTO() { StatusCode = 400, Data = "You havn't assigned in this exam yet",Message = "You havn't assigned in this exam yet" };
+                var result = ResultDTO.Sucess(answers);
+
+                return result; //new ResultDTO() { StatusCode = 200, Data = "You havn't assigned in this exam yet",Message = "You havn't assigned in this exam yet" };
             }
             else
             {
                 return new ResultDTO() { StatusCode = 400, Data = "Invalid operation" };
             }
         }
+
+        
     }
 }

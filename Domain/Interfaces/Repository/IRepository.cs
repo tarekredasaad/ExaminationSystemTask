@@ -12,16 +12,17 @@ namespace Domain.Interfaces.Repository
     {
        public T GetById(int id);
         public T Get(Expression<Func<T, bool>> expression);
-        public T Get(Expression<Func<T, bool>> expression,string model, string model2, string model3);
-        public T Get(string model,string model2,string model3);
-        public IEnumerable<T> GetAll();
+        public T Get(Expression<Func<T, bool>> expression,string model);
+        //public T Get(string model,string model2,string model3);
+        public IQueryable<T> GetAll();
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression);
         public IEnumerable<T> GetAll(string obj);
-        public void AddRange(List<T> list);
+        public Task<List<T>> AddRange(List<T> list);
 
-        public T GetByID(int id, string property1, string property2, string property3);
+        public Task<T> GetByID(int id, string property1);
 
-        public T Update(T entity);
+        public Task Update(T entity);
         public void Delete(int id);
-         T Create(T entity);
+         Task<T> Create(T entity);
     }
 }

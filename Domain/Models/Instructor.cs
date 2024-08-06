@@ -11,7 +11,9 @@ namespace Domain.Models
     {
 
         [JsonIgnore]
-        public HashSet<Exam>? Exams { get; set; }
+        public List<Exam>? Exams { get; set; }
+        [JsonIgnore]
+        public List<Course>? Courses { get; set; }
 
     }
 }
